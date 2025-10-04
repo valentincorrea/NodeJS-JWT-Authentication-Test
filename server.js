@@ -11,6 +11,7 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "Content-type,Authorization");
   next();
 });
+
 // Using the body-parser, tells the server what type of data to expect.
 // body-parser has to be imported "npm i body-parser"
 app.use(bodyParser.json());
@@ -56,7 +57,6 @@ app.post("/api/login", (req, res) => {
   if (foundUser) {
     let token = jwt.sign({ id: user.id, username: user.username }, secretKey, {
       expiresIn: "3m",
-      // expiresIn: "7d",
     });
 
     res.json({
@@ -105,6 +105,10 @@ app.use(function (err, req, res, next) {
   } else {
     next(err);
   }
+});
+// Adding a route
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.listen(PORT, () => {

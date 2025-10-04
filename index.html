@@ -27,15 +27,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <!-- <a class="nav-link active" aria-current="page" href="#">Home</a> -->
-            <a class="nav-link" href="/">Login</a>
-            <!-- <a class="nav-link" href="/api/dashboard">Dashboard</a> -->
-            <a type="button" class="nav-link" onclick="getDashboard()"
-              >Dashboard</a
-            >
-            <a type="button" class="nav-link" onclick="getSettings()"
-              >Settings</a
-            >
+            <!-- Updated links with a router function -->
+            <a class="nav-link" onclick="navigate('/login')">Login</a>
+            <a class="nav-link" onclick="navigate('/dashboard')">Dashboard</a>
+            <a class="nav-link" onclick="navigate('/settings')">Settings</a>
           </div>
         </div>
       </div>
@@ -72,6 +67,35 @@
     </main>
 
     <script>
+      // Implementing the HTML5 API
+      // --- Routing Logic ---
+      function navigate(path) {
+        history.pushState({}, "", path);
+        router();
+      }
+
+      function router() {
+        const path = window.location.pathname;
+        const token = localStorage.getItem("jwt");
+
+        // Determine which content to load based on the path
+        if (path === "/dashboard" && token) {
+          getDashboard();
+        } else if (path === "/settings" && token) {
+          getSettings();
+        } else if (path === "/login" || !token) {
+          showLoginForm();
+        } else {
+          // Redirect to dashboard if a token exists but no path is specified
+          navigate("/dashboard");
+        }
+      }
+
+      // Handle browser back/forward buttons
+      window.addEventListener("popstate", router);
+
+      // End of the Implementation of the HTML5 API
+
       // Add an interceptor to handle expired tokens
       axios.interceptors.response.use(
         (response) => {
