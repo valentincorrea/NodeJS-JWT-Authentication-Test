@@ -78,14 +78,21 @@ app.get("/api/dashboard", jwtMw, (req, res) => {
   console.log(req);
   res.json({
     success: true,
-    dashboardContent: "Welcome to my dashboard!",
+    dashboardContent: `<h1>Welcome to the Dashboard</h1>`,
   });
 });
+
+// app.get("/api/settings", jwtMw, (req, res) => {
+//   res.json({
+//     success: true,
+//     settingsContent: "Settings Page",
+//   });
+// });
 
 app.get("/api/settings", jwtMw, (req, res) => {
   res.json({
     success: true,
-    settingsContent: "Settings Page",
+    settingsContent: `<h1>Welcome to the Settings Page</h1>`,
   });
 });
 

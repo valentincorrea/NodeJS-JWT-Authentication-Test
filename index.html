@@ -57,10 +57,16 @@
             aria-describedby="password" />
         </div>
         <button class="btn btn-primary" onclick="login()">Login</button>
-        <button class="btn btn-primary" onclick="getDashboard()">
+        <button
+          class="btn btn-primary"
+          onclick="navigate('/dashboard')"
+          onclick="getDashboard()">
           Get Dashboard
         </button>
-        <button class="btn btn-primary" onclick="getSettings()">
+        <button
+          class="btn btn-primary"
+          onclick="navigate('/settings')"
+          onclick="getSettings()">
           Settings
         </button>
       </div>
