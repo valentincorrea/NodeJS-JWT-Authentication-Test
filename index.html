@@ -72,6 +72,24 @@
     </main>
 
     <script>
+      // Add an interceptor to handle expired tokens
+      axios.interceptors.response.use(
+        (response) => {
+          // If the request is successful, just return the response
+          return response;
+        },
+        (error) => {
+          if (error.response && error.response.status === 401) {
+            localStorage.removeItem("jwt");
+            // Display a message to the user
+            alert("Your session has expired. Please log in again.");
+            // Redirect to the login page by displaying the login form
+            showLoginForm();
+          }
+          // For any other error, reject the promise
+          return Promise.reject(error);
+        }
+      );
       function login() {
         const data = {
           username: document.getElementById("username").value,
@@ -115,13 +133,31 @@
             document.querySelector("main").innerHTML = res.data.settingsContent;
           });
       }
-
-      function onLoad() {
-        const token = localStorage.getItem("jwt");
-        if (token) {
-          getDashboard();
-        }
+      // Add a function to display the login form
+      function showLoginForm() {
+        const mainElement = document.querySelector("main");
+        mainElement.innerHTML = `
+          <div class="form">
+            <div class="mb-3">
+              <h1>Login</h1>
+              <label for="password" class="form-label">Username</label>
+              <input type="text" class="form-control" id="username" aria-describedby="Username" />
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" aria-describedby="password" />
+            </div>
+            <button class="btn btn-primary" onclick="login()">Login</button>
+          </div>
+        `;
       }
+
+      // function onLoad() {
+      //   const token = localStorage.getItem("jwt");
+      //   if (token) {
+      //     getDashboard();
+      //   }
+      // }
       //   onLoad();
     </script>
   </body>

@@ -55,7 +55,8 @@ app.post("/api/login", (req, res) => {
   }
   if (foundUser) {
     let token = jwt.sign({ id: user.id, username: user.username }, secretKey, {
-      expiresIn: "7d",
+      expiresIn: "3m",
+      // expiresIn: "7d",
     });
 
     res.json({
